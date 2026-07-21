@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Soroush Ahmadi | Web Developer</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#050509;
+    color:white;
+    line-height:1.6;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+header{
+    position:fixed;
+    width:100%;
+    top:0;
+    background:#050509cc;
+    backdrop-filter:blur(10px);
+    padding:20px 8%;
+    z-index:100;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:bold;
+    color:#9b5cff;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+
+section{
+    padding:100px 8%;
+}
+
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.hero h1{
+    font-size:60px;
+}
+
+.hero span{
+    color:#9b5cff;
+}
+
+.hero p{
+    margin:20px 0;
+    color:#bbb;
+    font-size:20px;
+}
+
+.btn{
+    display:inline-block;
+    padding:12px 30px;
+    background:#9b5cff;
+    color:white;
+    border-radius:30px;
+    text-decoration:none;
+}
+
+
+.profile{
+    width:300px;
+    height:300px;
+    border-radius:50%;
+    background:linear-gradient(45deg,#9b5cff,#00ffff);
+    padding:5px;
+}
+
+.profile img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+
+/* TITLE */
+
+.title{
+    font-size:40px;
+    margin-bottom:40px;
+    color:#9b5cff;
+}
+
+
+/* CARDS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+
+.card{
+    background:#11111a;
+    border:1px solid #27273b;
+    padding:30px;
+    border-radius:20px;
+    transition:.3s;
+}
+
+
+.card:hover{
+    transform:translateY(-10px);
+    border-color:#9b5cff;
+}
+
+
+.card h3{
+    color:#9b5cff;
+    margin-bottom:15px;
+}
+
+
+/* PROJECT */
+
+.project{
+    background:#11111a;
+    padding:30px;
+    border-radius:20px;
+    margin-bottom:20px;
+}
+
+
+.project a{
+    color:#9b5cff;
+}
+
+
+/* FOOTER */
+
+footer{
+    text-align:center;
+    padding:30px;
+    background:#08080d;
+}
+
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+.hero{
+    flex-direction:column;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:40px;
+}
+
+.profile{
+    margin-top:40px;
+}
+
+nav{
+    display:none;
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+<nav>
+
+<div class="logo">
+Soroush.dev
+</div>
+
+<div>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</div>
+
+</nav>
+
+</header>
+
+
+
+
+<section class="hero">
+
+
+<div>
+
+<h1>
+Hi, I'm <span>Soroush Ahmadi</span>
+</h1>
+
+<h2>
+Web Developer | Creative Developer
+</h2>
+
+
+<p>
+I build modern websites, web applications
+and creative digital experiences.
+</p>
+
+
+<a class="btn" href="#projects">
+View Projects
+</a>
+
+
+</div>
+
+
+
+<div class="profile">
+
+<img src="profile.jpg">
+
+</div>
+
+
+</section>
+
+
+
+
+<section id="about">
+
+<h2 class="title">
+About Me
+</h2>
+
+
+<p>
+I'm a passionate developer focused on creating
+modern websites, interactive applications and
+digital products.
+
+I combine programming and design to create
+clean and user-friendly experiences.
+</p>
+
+
+</section>
+
+
+
+
+
+<section id="skills">
+
+<h2 class="title">
+Skills
+</h2>
+
+
+<div class="cards">
+
+
+<div class="card">
+<h3>Development</h3>
+<p>
+HTML5<br>
+CSS3<br>
+JavaScript<br>
+Java<br>
+WordPress<br>
+WooCommerce
+</p>
+</div>
+
+
+<div class="card">
+<h3>Design</h3>
+<p>
+Adobe Photoshop<br>
+Graphic Design<br>
+Video Editing<br>
+UI Design
+</p>
+</div>
+
+
+<div class="card">
+<h3>Mobile</h3>
+<p>
+Android Development<br>
+App Publishing<br>
+Application Design
+</p>
+</div>
+
+
+</div>
+
+</section>
+
+
+
+
+
+<section id="projects">
+
+<h2 class="title">
+Projects
+</h2>
+
+
+
+<div class="project">
+
+<h2>
+Artami E-commerce Website
+</h2>
+
+<p>
+Online Xiaomi store developed with
+responsive design and modern UI.
+</p>
+
+<a href="https://artami.ir">
+Visit Website
+</a>
+
+</div>
+
+
+
+<div class="project">
+
+<h2>
+Snake Game
+</h2>
+
+<p>
+Interactive JavaScript game with
+score system and responsive gameplay.
+</p>
+
+
+</div>
+
+
+
+
+<div class="project">
+
+<h2>
+Dastyar Android App
+</h2>
+
+<p>
+Android application published on Myket.
+</p>
+
+
+</div>
+
+
+
+
+<div class="project">
+
+<h2>
+Rast Edit
+</h2>
+
+<p>
+Digital editing resource pack for
+video editors and designers.
+</p>
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+<section>
+
+<h2 class="title">
+Experience
+</h2>
+
+
+<div class="cards">
+
+
+<div class="card">
+<h3>
+Web Developer
+</h3>
+<p>
+Freelance<br>
+2025 - Present
+</p>
+</div>
+
+
+<div class="card">
+<h3>
+Graphic Designer
+</h3>
+<p>
+Digital Design Projects
+</p>
+</div>
+
+
+</div>
+
+</section>
+
+
+
+
+
+
+<section id="contact">
+
+<h2 class="title">
+Contact
+</h2>
+
+
+<p>
+Email:
+soroushahmadi7n@gmail.com
+</p>
+
+
+<p>
+GitHub:
+github.com/s7nuser
+</p>
+
+
+<p>
+Portfolio:
+artami.ir
+</p>
+
+
+</section>
+
+
+
+
+<footer>
+
+© 2026 Soroush Ahmadi
+
+</footer>
+
+
+
+</body>
+</html>
