@@ -1,559 +1,454 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>اکسپرس چت — چت‌بات هوشمند ووکامرس</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0a0a0d;
-    --bg-soft:#111116;
-    --surface:#17171e;
-    --surface-2:#1e1e27;
-    --line:#2a2a34;
-    --red:#e0293e;
-    --red-deep:#8c1626;
-    --red-glow:rgba(224,41,62,.35);
-    --ink:#f4f4f6;
-    --ink-dim:#a6a6b3;
-    --ink-faint:#6b6b78;
-    --mint:#35d399;
-    --amber:#f2b134;
-    --radius:18px;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Vazirmatn', sans-serif;
-    line-height:1.7;
-    overflow-x:hidden;
-  }
-  .num{font-family:'JetBrains Mono', monospace; font-weight:700; direction:ltr; display:inline-block;}
-  a{color:inherit; text-decoration:none;}
-  img{max-width:100%; display:block;}
-  .wrap{max-width:1120px; margin:0 auto; padding:0 24px;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اکسپرس چت | دستیار هوشمند فروشگاه شما</title>
+    <!-- استفاده از فونت Vazirmatn و آیکون‌های FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #E50914;
+            --primary-gradient: linear-gradient(135deg, #FF2E4D 0%, #C00A14 100%);
+            --accent-glow: rgba(255, 46, 77, 0.4);
+            --bg-dark: #0A0A0C;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #FFFFFF;
+            --text-muted: #A0A0AB;
+        }
 
-  /* ambient background texture */
-  .glow{
-    position:fixed; inset:0; z-index:0; pointer-events:none;
-    background:
-      radial-gradient(600px 400px at 85% -5%, rgba(224,41,62,.18), transparent 60%),
-      radial-gradient(500px 500px at -10% 30%, rgba(224,41,62,.10), transparent 60%);
-  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', sans-serif;
+            scroll-behavior: smooth;
+        }
 
-  /* ---------- header ---------- */
-  header{
-    position:sticky; top:0; z-index:50;
-    background:rgba(10,10,13,.75);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line);
-  }
-  header .wrap{
-    display:flex; align-items:center; justify-content:space-between;
-    height:76px;
-  }
-  .logo{display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.15rem;}
-  .logo-mark{
-    width:34px; height:34px; border-radius:10px;
-    background:linear-gradient(135deg, var(--red), var(--red-deep));
-    display:flex; align-items:center; justify-content:center;
-    font-size:1rem; box-shadow:0 6px 18px var(--red-glow);
-  }
-  .logo-sub{
-    font-size:.72rem; color:var(--ink-faint); font-weight:500;
-    border-inline-start:1px solid var(--line); padding-inline-start:10px; margin-inline-start:2px;
-  }
-  nav.links{display:flex; gap:28px; font-size:.92rem; color:var(--ink-dim);}
-  nav.links a:hover{color:var(--ink);}
-  .btn{
-    display:inline-flex; align-items:center; gap:8px;
-    padding:11px 22px; border-radius:999px; font-weight:700; font-size:.92rem;
-    cursor:pointer; border:none; transition:transform .15s ease, box-shadow .15s ease;
-  }
-  .btn-primary{
-    background:linear-gradient(135deg, var(--red), var(--red-deep));
-    color:#fff; box-shadow:0 8px 22px var(--red-glow);
-  }
-  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 12px 28px var(--red-glow);}
-  .btn-ghost{
-    background:transparent; color:var(--ink); border:1px solid var(--line);
-  }
-  .btn-ghost:hover{border-color:var(--ink-faint);}
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
 
-  /* ---------- hero ---------- */
-  .hero{position:relative; z-index:1; padding:88px 0 60px;}
-  .eyebrow{
-    display:inline-flex; align-items:center; gap:8px;
-    background:var(--surface); border:1px solid var(--line);
-    padding:7px 16px; border-radius:999px; font-size:.82rem; color:var(--ink-dim);
-    margin-bottom:26px;
-  }
-  .eyebrow .dot{width:7px; height:7px; border-radius:50%; background:var(--mint); box-shadow:0 0 0 4px rgba(53,211,153,.15);}
-  .hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:56px; align-items:center;}
-  h1{
-    font-size:clamp(2.1rem, 4.2vw, 3.4rem);
-    font-weight:900; line-height:1.28; letter-spacing:-.01em;
-    margin-bottom:22px;
-  }
-  h1 .accent{
-    color:var(--red);
-    position:relative;
-  }
-  .hero p.lead{
-    font-size:1.08rem; color:var(--ink-dim); max-width:520px; margin-bottom:34px;
-  }
-  .hero-ctas{display:flex; gap:14px; margin-bottom:38px; flex-wrap:wrap;}
-  .trust-row{display:flex; align-items:center; gap:22px; flex-wrap:wrap;}
-  .trust-item{display:flex; align-items:center; gap:8px; font-size:.85rem; color:var(--ink-faint);}
-  .trust-item svg{flex-shrink:0;}
+        /* پس‌زمینه پویا و متحرک */
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(229, 9, 20, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            top: -100px;
+            right: -100px;
+            z-index: -1;
+            animation: pulseGlow 8s infinite alternate;
+        }
 
-  /* ---------- signature: live chat demo ---------- */
-  .demo-card{
-    background:linear-gradient(180deg, var(--surface), var(--bg-soft));
-    border:1px solid var(--line);
-    border-radius:24px;
-    padding:0;
-    box-shadow:0 30px 70px -20px rgba(0,0,0,.6);
-    overflow:hidden;
-    position:relative;
-  }
-  .demo-head{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:16px 20px; border-bottom:1px solid var(--line);
-    background:var(--surface-2);
-  }
-  .demo-head-left{display:flex; align-items:center; gap:10px;}
-  .bot-avatar{
-    width:32px; height:32px; border-radius:9px;
-    background:linear-gradient(135deg, var(--red), var(--red-deep));
-    display:flex; align-items:center; justify-content:center; font-size:.9rem;
-  }
-  .demo-head-name{font-weight:700; font-size:.88rem;}
-  .demo-head-status{font-size:.72rem; color:var(--mint); display:flex; align-items:center; gap:5px;}
-  .demo-head-status::before{content:''; width:6px; height:6px; border-radius:50%; background:var(--mint);}
-  .demo-dots{display:flex; gap:6px;}
-  .demo-dots span{width:9px; height:9px; border-radius:50%; background:var(--line);}
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); }
+            100% { transform: scale(1.2) translate(-50px, 50px); }
+        }
 
-  .demo-body{padding:22px 20px; min-height:340px; display:flex; flex-direction:column; gap:14px; justify-content:flex-end;}
-  .msg{
-    max-width:80%; padding:11px 15px; border-radius:16px; font-size:.87rem;
-    animation:rise .4s ease both;
-  }
-  .msg.user{
-    align-self:flex-end; background:var(--surface-2); color:var(--ink);
-    border-bottom-left-radius:5px;
-  }
-  .msg.bot{
-    align-self:flex-start; background:linear-gradient(135deg, var(--red), var(--red-deep));
-    color:#fff; border-bottom-right-radius:5px;
-  }
-  @keyframes rise{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
-  .typing{
-    align-self:flex-start; display:flex; gap:4px; padding:12px 16px;
-    background:var(--surface-2); border-radius:16px; border-bottom-right-radius:5px;
-    width:fit-content;
-  }
-  .typing span{width:6px; height:6px; border-radius:50%; background:var(--ink-faint); animation:blink 1.2s infinite;}
-  .typing span:nth-child(2){animation-delay:.2s;}
-  .typing span:nth-child(3){animation-delay:.4s;}
-  @keyframes blink{0%,80%,100%{opacity:.25;} 40%{opacity:1;}}
+        /* هدر */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            backdrop-filter: blur(15px);
+            background: rgba(10, 10, 12, 0.7);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid var(--card-border);
+        }
 
-  .demo-input{
-    display:flex; align-items:center; gap:10px;
-    padding:14px 18px; border-top:1px solid var(--line); background:var(--surface-2);
-  }
-  .demo-input-field{
-    flex:1; height:38px; border-radius:999px; background:var(--bg-soft);
-    border:1px solid var(--line); color:var(--ink-faint); font-size:.82rem;
-    display:flex; align-items:center; padding:0 16px;
-  }
-  .demo-send{
-    width:38px; height:38px; border-radius:50%; flex-shrink:0;
-    background:linear-gradient(135deg, var(--red), var(--red-deep));
-    display:flex; align-items:center; justify-content:center;
-  }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-  /* ---------- section shell ---------- */
-  section{position:relative; z-index:1; padding:74px 0;}
-  .section-head{max-width:640px; margin-bottom:48px;}
-  .section-tag{
-    color:var(--red); font-weight:700; font-size:.82rem; letter-spacing:.02em;
-    display:flex; align-items:center; gap:8px; margin-bottom:14px;
-  }
-  .section-tag::before{content:''; width:22px; height:2px; background:var(--red); display:inline-block;}
-  h2{font-size:clamp(1.6rem, 2.6vw, 2.2rem); font-weight:800; letter-spacing:-.01em;}
-  .section-head p{color:var(--ink-dim); margin-top:12px; font-size:1rem;}
+        .logo-container img {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
 
-  /* ---------- features ---------- */
-  .feature-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:18px;}
-  .feature{
-    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
-    padding:26px; transition:border-color .2s ease, transform .2s ease;
-  }
-  .feature:hover{border-color:var(--red-deep); transform:translateY(-4px);}
-  .feature-icon{
-    width:44px; height:44px; border-radius:12px; background:var(--surface-2);
-    display:flex; align-items:center; justify-content:center; margin-bottom:16px;
-    color:var(--red);
-  }
-  .feature h3{font-size:1.02rem; font-weight:700; margin-bottom:8px;}
-  .feature p{color:var(--ink-dim); font-size:.87rem;}
+        .logo-container span {
+            font-size: 22px;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-  /* ---------- stats ---------- */
-  .stats-band{
-    background:var(--surface);
-    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-  }
-  .stats-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;}
-  .stat{text-align:center; padding:20px 10px;}
-  .ring{
-    width:104px; height:104px; margin:0 auto 16px; position:relative;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .ring svg{transform:rotate(-90deg);}
-  .ring-track{fill:none; stroke:var(--line); stroke-width:7;}
-  .ring-progress{fill:none; stroke-width:7; stroke-linecap:round; stroke:var(--red); transition:stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1);}
-  .ring-value{position:absolute; font-size:1.15rem; font-weight:800;}
-  .stat-label{color:var(--ink-dim); font-size:.85rem;}
+        .cta-btn {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            box-shadow: 0 4px 20px var(--accent-glow);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-  /* ---------- steps ---------- */
-  .steps-panel{
-    background:linear-gradient(135deg, var(--red-deep), #4a0d16 60%, var(--bg-soft));
-    border-radius:28px; padding:52px 44px; position:relative; overflow:hidden;
-  }
-  .steps-panel::after{
-    content:''; position:absolute; inset:0;
-    background:radial-gradient(400px 300px at 90% 0%, rgba(255,255,255,.08), transparent 60%);
-  }
-  .steps-head{position:relative; z-index:1; margin-bottom:40px;}
-  .steps-head h2{color:#fff;}
-  .steps-head p{color:rgba(255,255,255,.65); margin-top:10px;}
-  .steps-row{display:grid; grid-template-columns:repeat(3, 1fr); gap:24px; position:relative; z-index:1;}
-  .step{
-    background:rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.12);
-    border-radius:16px; padding:26px; backdrop-filter:blur(6px);
-  }
-  .step-num{
-    font-family:'JetBrains Mono', monospace; font-weight:700; color:rgba(255,255,255,.5);
-    font-size:.78rem; margin-bottom:14px; display:block;
-  }
-  .step h3{color:#fff; font-size:1rem; font-weight:700; margin-bottom:8px;}
-  .step p{color:rgba(255,255,255,.7); font-size:.86rem;}
-  .step-connector{
-    display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.3);
-  }
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 30px rgba(255, 46, 77, 0.6);
+        }
 
-  /* ---------- final cta ---------- */
-  .final-cta{
-    text-align:center; padding:80px 0 100px;
-  }
-  .final-cta h2{font-size:clamp(1.8rem, 3.2vw, 2.6rem); margin-bottom:16px;}
-  .final-cta p{color:var(--ink-dim); margin-bottom:34px; font-size:1.02rem;}
-  .final-cta .btn{padding:15px 34px; font-size:1rem;}
+        /* هیرو سکشن */
+        .hero {
+            padding: 160px 8% 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            min-height: 90vh;
+        }
 
-  footer{
-    border-top:1px solid var(--line); padding:32px 0; text-align:center;
-    color:var(--ink-faint); font-size:.82rem;
-  }
+        .hero-text {
+            flex: 1;
+        }
 
-  @media (max-width: 880px){
-    .hero-grid{grid-template-columns:1fr;}
-    .feature-grid{grid-template-columns:1fr 1fr;}
-    .stats-grid{grid-template-columns:1fr 1fr;}
-    .steps-row{grid-template-columns:1fr;}
-    nav.links{display:none;}
-  }
-  @media (max-width: 540px){
-    .feature-grid{grid-template-columns:1fr;}
-    .hero-ctas{flex-direction:column; align-items:stretch;}
-  }
+        .badge {
+            background: rgba(255, 46, 77, 0.1);
+            color: #FF2E4D;
+            border: 1px solid rgba(255, 46, 77, 0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
 
-  @media (prefers-reduced-motion: reduce){
-    *{animation:none !important; transition:none !important;}
-  }
-</style>
+        .hero-text h1 {
+            font-size: 48px;
+            line-height: 1.3;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 span {
+            color: #FF2E4D;
+        }
+
+        .hero-text p {
+            color: var(--text-muted);
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 35px;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 550px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px var(--accent-glow);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* آمار و ارقام */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 40px 8%;
+            background: rgba(255, 255, 255, 0.02);
+            border-y: 1px solid var(--card-border);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .stat-card h3 {
+            font-size: 36px;
+            color: #FF2E4D;
+            font-weight: 900;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* بخش امکانات و قابلیت‌ها */
+        .features {
+            padding: 100px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 25px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 46, 77, 0.5);
+            box-shadow: 0 15px 35px rgba(255, 46, 77, 0.15);
+        }
+
+        .feature-img-wrapper {
+            width: 100%;
+            height: 220px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .feature-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover .feature-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            color: #FFF;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* بخش دعوت به عمل پایانی (CTA) */
+        .cta-section {
+            padding: 80px 8%;
+            margin: 50px 8% 100px;
+            background: linear-gradient(135deg, rgba(255, 46, 77, 0.1) 0%, rgba(10, 10, 12, 0.8) 100%);
+            border: 1px solid rgba(255, 46, 77, 0.3);
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 46, 77, 0.1);
+        }
+
+        .cta-section h2 {
+            font-size: 40px;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        /* فوتر */
+        footer {
+            padding: 40px 8%;
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* ریسپانسیو برای موبایل */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 130px;
+            }
+            .hero-text h1 { font-size: 34px; }
+            .cta-section h2 { font-size: 28px; }
+        }
+    </style>
 </head>
 <body>
-<div class="glow"></div>
 
-<header>
-  <div class="wrap">
-    <div class="logo">
-      <span class="logo-mark">💬</span>
-      اکسپرس چت
-      <span class="logo-sub">افزونه ووکامرس</span>
+    <div class="bg-glow"></div>
+
+    <!-- هدر -->
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="اکسپرس چت">
+            <span>اکسپرس چت</span>
+        </div>
+        <a href="#buy" class="cta-btn">
+            <i class="fa-solid => fa-cart-shopping"></i>
+            خرید و دانلود فوری
+        </a>
+    </header>
+
+    <!-- بخش اصلی (Hero) -->
+    <section class="hero">
+        <div class="hero-text">
+            <span class="badge">🚀 نسل جدید پشتیبانی هوشمند</span>
+            <h1>فروش خود را با <span>اکسپرس چت</span> چند برابر کنید!</h1>
+            <p>دستیار هوشمند و خودکار فروشگاه ووکامرس. پاسخگویی ۲۴ ساعته به مشتریان، ثبت اتوماتیک سوالات و افزایش بی‌نظیر نرخ تبدیل مشتریان.</p>
+            <a href="#buy" class="cta-btn" style="padding: 16px 36px; font-size: 18px;">
+                همین الان تهیه کنید
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+        </div>
+        <div class="hero-image">
+            <img src="images/main-banner.png" alt="بنر اصلی اکسپرس چت">
+        </div>
+    </section>
+
+    <!-- آمار کلیدی -->
+    <div class="stats-container">
+        <div class="stat-card">
+            <h3>۱۰۰٪</h3>
+            <p>پاسخگویی خودکار</p>
+        </div>
+        <div class="stat-card">
+            <h3>۲۴/۷</h3>
+            <p>پشتیبانی بدون وقفه</p>
+        </div>
+        <div class="stat-card">
+            <h3>۷۰٪+</h3>
+            <p>افزایش فروش آنلاین</p>
+        </div>
+        <div class="stat-card">
+            <h3>۹۶٪</h3>
+            <p>رضایت خریداران</p>
+        </div>
     </div>
-    <nav class="links">
-      <a href="#features">امکانات</a>
-      <a href="#stats">آمار عملکرد</a>
-      <a href="#steps">راه‌اندازی</a>
-    </nav>
-    <a href="#cta" class="btn btn-primary">شروع رایگان</a>
-  </div>
-</header>
 
-<main>
-  <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <div class="eyebrow"><span class="dot"></span> تازه منتشر شد برای ووکامرس</div>
-        <h1>مشتری‌های فروشگاهتان را <span class="accent">یک ثانیه</span> هم منتظر نگذارید</h1>
-        <p class="lead">اکسپرس چت به سوال‌های مشتری‌ها درباره‌ی محصولات، سفارش‌ها و ارسال، همان لحظه و با اطلاعات دقیق فروشگاه شما جواب می‌دهد؛ حتی نیمه‌شب.</p>
-        <div class="hero-ctas">
-          <a href="#cta" class="btn btn-primary">فروشگاه را راه‌اندازی کنید</a>
-          <a href="#features" class="btn btn-ghost">دیدن امکانات ←</a>
+    <!-- بخش ویژگی‌ها -->
+    <section class="features" id="features">
+        <div class="section-title">
+            <h2>ویژگی‌های فوق‌العاده اکسپرس چت</h2>
+            <p>هر آنچه برای هوشمندسازی پشتیبانی سایت خود نیاز دارید</p>
         </div>
-        <div class="trust-row">
-          <div class="trust-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#35d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="#35d399" stroke-width="2"/></svg>
-            سازگار با WooCommerce
-          </div>
-          <div class="trust-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#35d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="#35d399" stroke-width="2"/></svg>
-            نصب بدون کدنویسی
-          </div>
-        </div>
-      </div>
 
-      <div class="demo-card">
-        <div class="demo-head">
-          <div class="demo-head-left">
-            <div class="bot-avatar">🤖</div>
-            <div>
-              <div class="demo-head-name">دستیار فروشگاه</div>
-              <div class="demo-head-status">آنلاین</div>
+        <div class="feature-grid">
+
+            <!-- ویژگی ۱ -->
+            <div class="feature-card">
+                <div class="feature-img-wrapper">
+                    <img src="images/chat-page.jpg" alt="صفحه چت">
+                </div>
+                <h3>صفحه چت فوق جذاب</h3>
+                <p>طراحی مدرن و ارگونومیک که حس آرامش واقعی و اعتماد کامل را به مشتریان شما منتقل می‌کند.</p>
             </div>
-          </div>
-          <div class="demo-dots"><span></span><span></span><span></span></div>
+
+            <!-- ویژگی ۲ -->
+            <div class="feature-card">
+                <div class="feature-img-wrapper">
+                    <img src="images/analytics.jpg" alt="پنل تحلیل پیشرفته">
+                </div>
+                <h3>پنل تحلیل پیشرفته هوشمند</h3>
+                <p>بررسی و تحلیل صفر تا صد عملکرد ربات و رفتار کاربران برای بهینه‌سازی فروشگاه شما.</p>
+            </div>
+
+            <!-- ویژگی ۳ -->
+            <div class="feature-card">
+                <div class="feature-img-wrapper">
+                    <img src="images/dashboard.jpg" alt="داشبورد ۲۴ ساعته">
+                </div>
+                <h3>داشبورد آنالیز ۲۴ ساعته</h3>
+                <p>تحلیل خودکار تمام چت‌های مشتریان در طول شبانه‌روز با نمودارهای دقیق و لحظه‌ای.</p>
+            </div>
+
+            <!-- ویژگی ۴ -->
+            <div class="feature-card">
+                <div class="feature-img-wrapper">
+                    <img src="images/sync.jpg" alt="همگام سازی اتوماتیک">
+                </div>
+                <h3>همگام‌سازی اتوماتیک محصولات</h3>
+                <p>افزوده شدن و به‌روزرسانی خودکار تمامی محصولات ووکامرس در دیتابیس ربات پاسخگو.</p>
+            </div>
+
+            <!-- ویژگی ۵ -->
+            <div class="feature-card">
+                <div class="feature-img-wrapper">
+                    <img src="images/tickets.jpg" alt="سیستم تیکت ها">
+                </div>
+                <h3>مدیریت و بررسی تیکت‌ها</h3>
+                <p>امکان پاسخگویی مجزا و دستی به تیکت‌های خاص مشتریان در کنار پاسخ‌های هوشمند ربات.</p>
+            </div>
+
+            <!-- ویژگی ۶ -->
+            <div class="feature-card">
+                <div class="feature-img-wrapper">
+                    <img src="images/knowledge.jpg" alt="دانش ربات">
+                </div>
+                <h3>آموزش خودکار به ربات</h3>
+                <p>قابلیت افزودن آسان دانش جدید و پاسخ به سوالات متداول برای هوشمندتر شدن ربات.</p>
+            </div>
+
+            <!-- ویژگی ۷ -->
+            <div class="feature-card" style="grid-column: span 1 / -1;">
+                <div class="feature-img-wrapper" style="height: 280px;">
+                    <img src="images/settings.jpg" alt="تنظیمات پیشرفته">
+                </div>
+                <h3>تنظیمات فوق پیشرفته و سفارشی‌سازی</h3>
+                <p>شخصی‌سازی کامل ظاهر، متون، فونت‌ها و لحن پاسخگویی ربات متناسب با برند شما.</p>
+            </div>
+
         </div>
-        <div class="demo-body" id="chatBody"></div>
-        <div class="demo-input">
-          <div class="demo-input-field">در حال تایپ سوال...</div>
-          <div class="demo-send">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 3L3 10.5l7 3.5m11-11l-7 18-3.5-7m10.5-11L10.5 14" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="features">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-tag">امکانات</div>
-        <h2>یک دستیار فروش، نه فقط یک چت‌باکس</h2>
-        <p>هر ویژگی برای این ساخته شده که فاصله‌ی بین «سوال مشتری» و «خرید» را کوتاه‌تر کند.</p>
-      </div>
-      <div class="feature-grid">
-        <div class="feature">
-          <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/></svg></div>
-          <h3>پاسخ فوری و دقیق</h3>
-          <p>هر سوال مشتری بر اساس اطلاعات واقعی محصولات شما، بدون معطلی جواب داده می‌شود.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 9l9-6 9 6-9 6-9-6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 9v6l9 6 9-6V9" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-          <h3>اتصال کامل به فروشگاه</h3>
-          <p>موجودی، قیمت و مشخصات هر محصول به‌طور خودکار در دسترس دستیار قرار می‌گیرد.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-          <h3>جست‌وجوی هوشمند محصول</h3>
-          <p>مشتری با زبان طبیعی می‌پرسد، دستیار محصول مناسب را از میان کاتالوگ پیدا می‌کند.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h16v12H7l-3 3V4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-          <h3>تیکتینگ برای سوال‌های خاص</h3>
-          <p>وقتی پاسخ آماده نیست، گفت‌وگو با یک تیکت به تیم پشتیبانی شما ارجاع داده می‌شود.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19h16M6 19V9l5-4 5 4v10" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 19v-5h4v5" stroke="currentColor" stroke-width="1.8"/></svg></div>
-          <h3>داشبورد تحلیل عملکرد</h3>
-          <p>تعداد گفت‌وگوها، سوال‌های بی‌پاسخ و روند فروش را در یک نگاه می‌بینید.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="7" y="2" width="10" height="20" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M11 18h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-          <h3>یکسان روی همه دستگاه‌ها</h3>
-          <p>روی موبایل، تبلت و دسکتاپ، تجربه‌ی گفت‌وگو دقیقاً یکسان و روان است.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- بخش خرید پایانی -->
+    <section class="cta-section" id="buy">
+        <h2>جایگزین واقعی پشتیبانی انسانی و صرفه‌جویی در هزینه‌ها</h2>
+        <p style="margin-bottom: 30px; color: var(--text-muted); font-size: 18px;">به ما اعتماد کنید و فروشگاه خود را به نسل جدید هوش مصنوعی مجهز کنید.</p>
+        <a href="#" class="cta-btn" style="padding: 18px 45px; font-size: 20px;">
+            <i class="fa-solid fa-bolt"></i>
+            خرید مستقیم و دریافت آنلاین افزونه
+        </a>
+    </section>
 
-  <section id="stats" class="stats-band">
-    <div class="wrap">
-      <div class="section-head">
-        <div class="section-tag">نتیجه در عمل</div>
-        <h2>عددهایی که فروشگاه‌های واقعی ثبت کرده‌اند</h2>
-      </div>
-      <div class="stats-grid">
-        <div class="stat">
-          <div class="ring">
-            <svg width="104" height="104" viewBox="0 0 104 104">
-              <circle class="ring-track" cx="52" cy="52" r="45"/>
-              <circle class="ring-progress" cx="52" cy="52" r="45" stroke-dasharray="283" stroke-dashoffset="283" data-target="98"/>
-            </svg>
-            <span class="ring-value num">98%</span>
-          </div>
-          <div class="stat-label">رضایت کاربران</div>
-        </div>
-        <div class="stat">
-          <div class="ring">
-            <svg width="104" height="104" viewBox="0 0 104 104">
-              <circle class="ring-track" cx="52" cy="52" r="45"/>
-              <circle class="ring-progress" cx="52" cy="52" r="45" stroke-dasharray="283" stroke-dashoffset="283" data-target="70"/>
-            </svg>
-            <span class="ring-value num">%70+</span>
-          </div>
-          <div class="stat-label">افزایش فروش</div>
-        </div>
-        <div class="stat">
-          <div class="ring">
-            <svg width="104" height="104" viewBox="0 0 104 104">
-              <circle class="ring-track" cx="52" cy="52" r="45"/>
-              <circle class="ring-progress" cx="52" cy="52" r="45" stroke-dasharray="283" stroke-dashoffset="283" data-target="100"/>
-            </svg>
-            <span class="ring-value num">24/7</span>
-          </div>
-          <div class="stat-label">پاسخگویی خودکار</div>
-        </div>
-        <div class="stat">
-          <div class="ring">
-            <svg width="104" height="104" viewBox="0 0 104 104">
-              <circle class="ring-track" cx="52" cy="52" r="45"/>
-              <circle class="ring-progress" cx="52" cy="52" r="45" stroke-dasharray="283" stroke-dashoffset="283" data-target="100"/>
-            </svg>
-            <span class="ring-value num">100%</span>
-          </div>
-          <div class="stat-label">سازگار و مطمئن</div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- فوتر -->
+    <footer>
+        <p>© تمامی حقوق برای اکسپرس چت محفوظ است.</p>
+    </footer>
 
-  <section id="steps">
-    <div class="wrap">
-      <div class="steps-panel">
-        <div class="steps-head">
-          <h2>راه‌اندازی، سه گام تا شروع</h2>
-          <p>بدون تنظیمات پیچیده، همین امروز دستیار فروشگاه‌تان آماده‌ی کار می‌شود.</p>
-        </div>
-        <div class="steps-row">
-          <div class="step">
-            <span class="step-num">۰۱ / نصب</span>
-            <h3>افزونه را نصب کنید</h3>
-            <p>در چند کلیک به فروشگاه ووکامرس خودتان وصل می‌شود.</p>
-          </div>
-          <div class="step">
-            <span class="step-num">۰۲ / تنظیم</span>
-            <h3>سناریوهای پاسخ را بچینید</h3>
-            <p>لحن، سوال‌های پرتکرار و مسیر ارجاع به پشتیبانی را مشخص کنید.</p>
-          </div>
-          <div class="step">
-            <span class="step-num">۰۳ / شروع</span>
-            <h3>چت هوشمند را روشن کنید</h3>
-            <p>از همان لحظه، مشتری‌ها پاسخ فوری می‌گیرند و فروش رشد می‌کند.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="final-cta" id="cta">
-    <div class="wrap">
-      <h2>یک قدم تا فروشگاهی که هیچ‌وقت جواب مشتری را معطل نمی‌گذارد</h2>
-      <p>همین حالا اکسپرس چت را روی فروشگاه ووکامرس خود راه‌اندازی کنید.</p>
-      <a href="#" class="btn btn-primary">فروشگاه را راه‌اندازی کنید</a>
-    </div>
-  </section>
-</main>
-
-<footer>
-  اکسپرس چت — دستیار هوشمند فروشگاه‌های ووکامرس
-</footer>
-
-<script>
-  // animated stat rings on scroll into view
-  const rings = document.querySelectorAll('.ring-progress');
-  const ringObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if(entry.isIntersecting){
-        const circle = entry.target;
-        const target = parseFloat(circle.dataset.target);
-        const circumference = 283;
-        const offset = circumference - (target/100)*circumference;
-        requestAnimationFrame(()=>{ circle.style.strokeDashoffset = offset; });
-        ringObserver.unobserve(circle);
-      }
-    });
-  }, {threshold:.4});
-  rings.forEach(r => ringObserver.observe(r));
-
-  // signature live chat demo
-  const conversation = [
-    {role:'user', text:'این کفش سایز ۴۲ موجوده؟'},
-    {role:'bot', text:'بله، سایز ۴۲ الان ۶ عدد موجودی داره. می‌خواید لینک خرید رو براتون بفرستم؟'},
-    {role:'user', text:'سفارش دیروزم کی می‌رسه؟'},
-    {role:'bot', text:'سفارش شما دیروز مرسوله شده و طبق پیگیری پستی، فردا عصر تحویل داده می‌شه.'},
-    {role:'user', text:'کد تخفیف فعال دارید؟'},
-    {role:'bot', text:'بله! با کد EXPRESS10 روی این محصول ۱۰٪ تخفیف می‌گیرید.'},
-  ];
-
-  const chatBody = document.getElementById('chatBody');
-  let i = 0;
-
-  function typeDelay(){ return 900 + Math.random()*500; }
-
-  function addMessage(msg){
-    const bubble = document.createElement('div');
-    bubble.className = 'msg ' + (msg.role === 'user' ? 'user' : 'bot');
-    bubble.textContent = msg.text;
-    chatBody.appendChild(bubble);
-    trimMessages();
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  function showTyping(){
-    const t = document.createElement('div');
-    t.className = 'typing';
-    t.id = 'typingIndicator';
-    t.innerHTML = '<span></span><span></span><span></span>';
-    chatBody.appendChild(t);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  function removeTyping(){
-    const t = document.getElementById('typingIndicator');
-    if(t) t.remove();
-  }
-
-  function trimMessages(){
-    while(chatBody.children.length > 5){
-      chatBody.removeChild(chatBody.firstChild);
-    }
-  }
-
-  function playNext(){
-    const msg = conversation[i % conversation.length];
-    if(msg.role === 'bot'){
-      showTyping();
-      setTimeout(()=>{
-        removeTyping();
-        addMessage(msg);
-        i++;
-        setTimeout(playNext, 1600);
-      }, 1100);
-    } else {
-      addMessage(msg);
-      i++;
-      setTimeout(playNext, 900);
-    }
-  }
-
-  setTimeout(playNext, 500);
-</script>
 </body>
 </html>
