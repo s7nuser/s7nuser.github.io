@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ماسماسک | سایتت خوشگل‌تر کن</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Vazirmatn',Tahoma,sans-serif;
+  background:#fff;
+  color:#171717;
+  overflow-x:hidden;
+  cursor:none;
+}
+a,button{cursor:none}
+:root{--orange:#ff6b1a;--orange2:#ff8a3d;--dark:#161616}
+
+.cursor{
+  position:fixed; width:24px;height:24px;border:2px solid var(--orange);
+  border-radius:50%;pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:width .18s,height .18s,background .18s,border .18s;
+  box-shadow:0 0 25px rgba(255,107,26,.28);
+}
+.cursor-dot{
+  position:fixed;width:7px;height:7px;background:var(--orange);
+  border-radius:50%;pointer-events:none;z-index:100000;
+  transform:translate(-50%,-50%);
+}
+.cursor.hover{width:48px;height:48px;background:rgba(255,107,26,.12)}
+
+.bg-orb{position:fixed;border-radius:50%;filter:blur(80px);opacity:.18;z-index:-1}
+.o1{width:360px;height:360px;background:#ff6b1a;top:-150px;right:-100px}
+.o2{width:280px;height:280px;background:#ffc09a;bottom:8%;left:-130px}
+
+header{
+  width:min(1160px,92%);margin:22px auto 0;padding:15px 20px;
+  border:1px solid #eee;border-radius:22px;background:rgba(255,255,255,.85);
+  backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:16px;z-index:1000;box-shadow:0 15px 45px rgba(0,0,0,.07)
+}
+.logo{font-weight:900;font-size:22px;display:flex;gap:9px;align-items:center}
+.logo span{color:var(--orange)}
+nav{display:flex;gap:24px}
+nav a{text-decoration:none;color:#555;font-size:14px;font-weight:600;transition:.2s}
+nav a:hover{color:var(--orange)}
+.nav-btn{
+  background:var(--dark);color:#fff;text-decoration:none;padding:11px 18px;
+  border-radius:13px;font-size:13px;font-weight:700;box-shadow:0 7px 0 #000;
+  transition:.2s
+}
+.nav-btn:hover{transform:translateY(3px);box-shadow:0 4px 0 #000}
+
+.hero{width:min(1160px,92%);margin:95px auto 75px;text-align:center}
+.badge{
+  display:inline-flex;gap:8px;align-items:center;background:#fff3eb;color:#e65305;
+  border:1px solid #ffd8c3;padding:9px 15px;border-radius:999px;font-size:13px;font-weight:700;
+  box-shadow:0 10px 30px rgba(255,107,26,.08)
+}
+h1{
+  margin:22px auto 18px;max-width:900px;font-size:clamp(42px,7vw,82px);
+  line-height:1.08;font-weight:900;letter-spacing:-3px;
+  color:#151515;text-shadow:0 8px 0 #eee,0 18px 35px rgba(0,0,0,.1)
+}
+h1 span{color:var(--orange)}
+.hero p{max-width:700px;margin:auto;color:#666;line-height:2;font-size:17px}
+.hero-actions{margin-top:30px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.primary,.secondary{
+  padding:15px 25px;border-radius:15px;text-decoration:none;font-weight:800;font-size:14px;
+  transition:.25s
+}
+.primary{background:var(--orange);color:#fff;box-shadow:0 8px 0 #c94805}
+.primary:hover{transform:translateY(4px);box-shadow:0 4px 0 #c94805}
+.secondary{background:#fff;color:#222;border:1px solid #ddd;box-shadow:0 7px 20px rgba(0,0,0,.06)}
+.secondary:hover{transform:translateY(-3px)}
+
+.demo{
+  width:min(1000px,92%);margin:auto;background:#171717;border-radius:30px;padding:10px;
+  box-shadow:0 35px 80px rgba(0,0,0,.22),0 0 0 1px #333
+}
+.browser{background:#fafafa;border-radius:23px;overflow:hidden}
+.browser-top{height:50px;background:#eee;display:flex;align-items:center;padding:0 17px;gap:7px}
+.dot{width:11px;height:11px;border-radius:50%;background:#bbb}
+.address{margin:auto;background:#fff;border:1px solid #ddd;padding:7px 22px;border-radius:9px;color:#999;font-size:11px}
+.demo-content{padding:65px 30px 75px;text-align:center}
+.demo-icon{
+  width:86px;height:86px;margin:0 auto 20px;border-radius:25px;background:linear-gradient(145deg,#fff,#eee);
+  display:grid;place-items:center;font-size:38px;box-shadow:15px 15px 30px #d8d8d8,-10px -10px 25px #fff
+}
+.demo-content h2{font-size:30px;font-weight:900;margin-bottom:10px}
+.demo-content p{color:#777;line-height:1.9}
+
+.section{width:min(1160px,92%);margin:120px auto}
+.section-head{text-align:center;margin-bottom:45px}
+.section-head small{color:var(--orange);font-weight:800}
+.section-head h2{font-size:clamp(30px,5vw,48px);font-weight:900;margin:8px 0}
+.section-head p{color:#777}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{
+  padding:28px;background:#fff;border:1px solid #eee;border-radius:25px;
+  box-shadow:0 18px 45px rgba(0,0,0,.07);transition:.3s;position:relative;overflow:hidden
+}
+.card:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,107,26,.07),transparent 50%);pointer-events:none}
+.card:hover{transform:translateY(-8px);box-shadow:0 28px 60px rgba(0,0,0,.11)}
+.card-icon{font-size:35px;margin-bottom:18px}
+.card h3{font-size:20px;margin-bottom:10px}
+.card p{font-size:14px;line-height:2;color:#777}
+
+.showcase{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:stretch
+}
+.panel{
+  background:#171717;color:#fff;border-radius:28px;padding:35px;min-height:300px;
+  box-shadow:0 25px 55px rgba(0,0,0,.18);position:relative;overflow:hidden
+}
+.panel:after{content:"";position:absolute;width:220px;height:220px;background:var(--orange);
+  border-radius:50%;filter:blur(80px);opacity:.25;left:-80px;bottom:-100px}
+.panel h3{font-size:27px;margin-bottom:13px}
+.panel p{color:#bbb;line-height:2;font-size:14px}
+.chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:25px}
+.chip{border:1px solid #3a3a3a;padding:8px 12px;border-radius:10px;font-size:12px;color:#ddd}
+
+.cta{
+  background:linear-gradient(135deg,#ff6b1a,#ff8b45);color:#fff;border-radius:32px;
+  padding:55px 35px;text-align:center;box-shadow:0 30px 70px rgba(255,107,26,.28)
+}
+.cta h2{font-size:38px;font-weight:900;margin-bottom:12px}
+.cta p{opacity:.9;line-height:2;margin-bottom:25px}
+.cta a{display:inline-block;background:#fff;color:#e65305;padding:14px 24px;border-radius:14px;text-decoration:none;font-weight:900}
+
+footer{border-top:1px solid #eee;padding:35px 5%;text-align:center;color:#888;font-size:12px}
+
+@media(max-width:760px){
+  nav{display:none}.cards,.showcase{grid-template-columns:1fr}
+  h1{letter-spacing:-1.5px}.hero{margin-top:70px}.demo-content{padding:45px 20px}
+}
+</style>
+</head>
+<body>
+<div class="cursor"></div><div class="cursor-dot"></div>
+<div class="bg-orb o1"></div><div class="bg-orb o2"></div>
+
+<header>
+  <div class="logo">ماس<span>ماسک</span> ✦</div>
+  <nav>
+    <a href="#features">امکانات</a>
+    <a href="#demo">دمو</a>
+    <a href="#about">درباره افزونه</a>
+  </nav>
+  <a class="nav-btn" href="#download">دریافت افزونه</a>
+</header>
+
+<section class="hero">
+  <div class="badge">✦ افزونه زیباسازی وردپرس</div>
+  <h1>سایتت رو <span>خوشگل‌تر</span> کن.</h1>
+  <p>
+    ماسماسک یک افزونه سبک و حرفه‌ای برای اضافه کردن افکت‌های جذاب به سایت وردپرسی شماست؛
+    بدون کدنویسی، بدون دردسر و با کنترل کامل از پنل مدیریت.
+  </p>
+  <div class="hero-actions">
+    <a class="primary" href="#demo">مشاهده دمو</a>
+    <a class="secondary" href="#features">دیدن امکانات</a>
+  </div>
+</section>
+
+<section class="demo" id="demo">
+  <div class="browser">
+    <div class="browser-top">
+      <i class="dot"></i><i class="dot"></i><i class="dot"></i>
+      <div class="address">yourwebsite.ir</div>
+    </div>
+    <div class="demo-content">
+      <div class="demo-icon">✦</div>
+      <h2>این فقط یک دمو نیست!</h2>
+      <p>موس را حرکت بده، روی دکمه‌ها برو و صفحه را اسکرول کن.<br>خودت تفاوت افکت‌ها را ببین.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features">
+  <div class="section-head">
+    <small>MASMASAK</small>
+    <h2>سه ابزار برای یک سایت جذاب‌تر</h2>
+    <p>همه‌چیز ساده، سریع و قابل تنظیم.</p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🖱️</div>
+      <h3>موس سفارشی</h3>
+      <p>ظاهر نشانگر موس را با طرح‌های آماده یا تصویر دلخواه تغییر بده؛ حتی می‌توانی از طرح‌های دست، انگشت و تایپ استفاده کنی.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">↕</div>
+      <h3>اسکرول جذاب</h3>
+      <p>برای اسکرول سایتت استایل‌های متفاوت انتخاب کن و رنگ و ضخامت نوار اسکرول را مطابق ظاهر سایت تنظیم کن.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">✦</div>
+      <h3>افکت کلیک</h3>
+      <p>با هر کلیک یک افکت نرم و جذاب نمایش بده تا تعامل کاربر با سایتت حس متفاوتی پیدا کند.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="showcase">
+    <div class="panel">
+      <h3>طراحی شده برای زیبایی</h3>
+      <p>ماسماسک فقط چند افکت ساده نیست؛ یک مجموعه کنترل‌شده برای شخصی‌سازی تجربه کاربر در سایت وردپرسی شماست.</p>
+      <div class="chips"><span class="chip">RTL</span><span class="chip">بدون کدنویسی</span><span class="chip">سبک</span><span class="chip">واکنش‌گرا</span></div>
+    </div>
+    <div class="panel">
+      <h3>پنل مدیریت ساده</h3>
+      <p>افکت موردنظرت را انتخاب کن، رنگ و تنظیمات را تغییر بده و نتیجه را روی سایت ببین. همه‌چیز از یک محیط مرتب مدیریت می‌شود.</p>
+      <div class="chips"><span class="chip">۱۵ طرح موس</span><span class="chip">۱۵ اسکرول</span><span class="chip">۱۵ کلیک</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="download">
+  <div class="cta">
+    <h2>وقتشه سایتت یه فرق کوچیک داشته باشه.</h2>
+    <p>ماسماسک؛ چند افکت ساده، یک تجربه کاربری متفاوت.</p>
+    <a href="#">شروع با ماسماسک</a>
+  </div>
+</section>
+
+<footer>© 2026 ماسماسک — سایتت خوشگل‌تر کن</footer>
+
+<script>
+const cursor=document.querySelector('.cursor');
+const dot=document.querySelector('.cursor-dot');
+let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my;
+addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+});
+function animate(){
+  cx+=(mx-cx)*.18; cy+=(my-cy)*.18;
+  cursor.style.left=cx+'px'; cursor.style.top=cy+'px';
+  requestAnimationFrame(animate);
+}
+animate();
+document.querySelectorAll('a,button,.card,.demo-icon').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cursor.classList.add('hover'));
+  el.addEventListener('mouseleave',()=>cursor.classList.remove('hover'));
+});
+</script>
+</body>
+</html>
