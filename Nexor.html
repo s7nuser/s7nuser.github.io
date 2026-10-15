@@ -2,175 +2,372 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
 <title>Nexor Search</title>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
-  :root { --neon: #00ff9d; --neon-2: #00ffcc; --dark: #000; }
-  body {
-    background: var(--dark); color: #fff; min-height: 100vh;
-    overflow-x: hidden; position: relative;
-    display: flex; align-items: center; justify-content: center; padding: 20px;
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Vazirmatn', sans-serif;
+    -webkit-tap-highlight-color: transparent;
   }
+
+  :root {
+    --neon: #00ff9d;
+    --neon-2: #00ffcc;
+    --dark: #000;
+    --card-bg: rgba(0, 255, 157, 0.04);
+    --border-glow: rgba(0, 255, 157, 0.3);
+  }
+
+  html, body {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--dark);
+    color: #fff;
+    min-height: 100vh;
+    min-height: 100dvh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
+  /* ---------- پس‌زمینه ---------- */
   .grid-bg {
-    position: fixed; inset: 0;
+    position: fixed;
+    inset: 0;
     background-image:
       linear-gradient(rgba(0,255,157,0.08) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0,255,157,0.08) 1px, transparent 1px);
-    background-size: 50px 50px; z-index: 0;
+    background-size: 40px 40px;
+    z-index: 0;
     animation: gridMove 20s linear infinite;
-    mask-image: radial-gradient(circle at center, #000 0%, transparent 75%);
-    -webkit-mask-image: radial-gradient(circle at center, #000 0%, transparent 75%);
+    mask-image: radial-gradient(circle at center, #000 0%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at center, #000 0%, transparent 80%);
   }
-  @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }
+  @keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+  }
+
   .laser {
-    position: fixed; width: 3px; height: 100vh;
+    position: fixed;
+    width: 2px;
+    height: 100vh;
     background: linear-gradient(to bottom, transparent, var(--neon), transparent);
     box-shadow: 0 0 20px var(--neon), 0 0 40px var(--neon);
-    z-index: 1; opacity: 0.6; animation: laserScan 6s ease-in-out infinite;
+    z-index: 1;
+    opacity: 0.5;
+    animation: laserScan 6s ease-in-out infinite;
+    pointer-events: none;
   }
   .laser:nth-child(2) { left: 20%; animation-delay: 0s; }
   .laser:nth-child(3) { left: 50%; animation-delay: 2s; background: linear-gradient(to bottom, transparent, var(--neon-2), transparent); box-shadow: 0 0 20px var(--neon-2); }
   .laser:nth-child(4) { left: 80%; animation-delay: 4s; }
   @keyframes laserScan {
-    0%, 100% { transform: translateX(-100px) scaleY(1); opacity: 0.2; }
-    50% { transform: translateX(100px) scaleY(1.2); opacity: 0.8; }
+    0%, 100% { transform: translateX(-80px) scaleY(1); opacity: 0.15; }
+    50% { transform: translateX(80px) scaleY(1.2); opacity: 0.7; }
   }
-  .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
   .particle {
-    position: absolute; width: 4px; height: 4px;
-    background: var(--neon); border-radius: 50%;
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--neon);
+    border-radius: 50%;
     box-shadow: 0 0 10px var(--neon);
     animation: floatUp linear infinite;
   }
   @keyframes floatUp {
     from { transform: translateY(100vh) scale(0); opacity: 0; }
-    10% { opacity: 1; } 90% { opacity: 1; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
     to { transform: translateY(-10vh) scale(1); opacity: 0; }
   }
-  .container { position: relative; z-index: 10; width: 100%; max-width: 720px; text-align: center; }
+
+  /* ---------- کانتینر ---------- */
+  .container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    padding: 0 2px;
+  }
+
+  /* ---------- لوگو ---------- */
   .logo {
-    font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; letter-spacing: 2px;
-    margin-bottom: 8px;
+    font-size: clamp(2rem, 9vw, 4.5rem);
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
     background: linear-gradient(135deg, #fff 0%, var(--neon) 50%, var(--neon-2) 100%);
-    -webkit-background-clip: text; background-clip: text;
+    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 0 20px rgba(0,255,157,0.7));
     animation: logoPulse 3s ease-in-out infinite;
+    line-height: 1.2;
+    word-break: break-word;
   }
-  .logo span { color: var(--neon); -webkit-text-fill-color: var(--neon); }
+  .logo span {
+    color: var(--neon);
+    -webkit-text-fill-color: var(--neon);
+  }
   @keyframes logoPulse {
     0%, 100% { filter: drop-shadow(0 0 20px rgba(0,255,157,0.5)); }
     50% { filter: drop-shadow(0 0 40px rgba(0,255,157,1)); }
   }
+
   .tagline {
-    color: rgba(255,255,255,0.5); font-size: 0.9rem;
-    margin-bottom: 40px; letter-spacing: 3px;
+    color: rgba(255,255,255,0.5);
+    font-size: clamp(0.65rem, 3vw, 0.9rem);
+    margin-bottom: 28px;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
-  .tagline::before, .tagline::after {
-    content: '◆'; color: var(--neon); margin: 0 10px;
+  .tagline::before,
+  .tagline::after {
+    content: '◆';
+    color: var(--neon);
+    font-size: 0.6em;
     animation: blink 2s infinite;
   }
   @keyframes blink { 50% { opacity: 0.3; } }
-  .search-wrapper { position: relative; margin-bottom: 30px; }
+
+  /* ---------- جستجو ---------- */
+  .search-wrapper {
+    position: relative;
+    margin-bottom: 22px;
+  }
+
   .search-box {
-    position: relative; display: flex; align-items: center;
+    position: relative;
+    display: flex;
+    align-items: center;
     background: rgba(0, 255, 157, 0.05);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1.5px solid rgba(0, 255, 157, 0.3);
-    border-radius: 24px; padding: 6px 6px 6px 20px;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 8px 32px rgba(0, 255, 157, 0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1.5px solid var(--border-glow);
+    border-radius: 20px;
+    padding: 4px 4px 4px 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 24px rgba(0, 255, 157, 0.1), inset 0 1px 0 rgba(255,255,255,0.1);
     overflow: hidden;
+    gap: 4px;
   }
   .search-box::before {
-    content: ''; position: absolute; inset: 0; border-radius: 24px; padding: 1.5px;
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1.5px;
     background: linear-gradient(135deg, var(--neon), transparent 40%, transparent 60%, var(--neon-2));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude;
-    opacity: 0.6; pointer-events: none; animation: borderRotate 4s linear infinite;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.5;
+    pointer-events: none;
+    animation: borderRotate 4s linear infinite;
   }
-  @keyframes borderRotate { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+  @keyframes borderRotate {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
   .search-box:focus-within {
-    border-color: var(--neon); background: rgba(0, 255, 157, 0.1);
-    box-shadow: 0 0 0 4px rgba(0, 255, 157, 0.15), 0 0 40px rgba(0, 255, 157, 0.5), 0 8px 40px rgba(0, 255, 157, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-    transform: translateY(-2px);
+    border-color: var(--neon);
+    background: rgba(0, 255, 157, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 255, 157, 0.15),
+                0 0 30px rgba(0, 255, 157, 0.4),
+                0 6px 30px rgba(0, 255, 157, 0.25),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateY(-1px);
   }
+
   .search-icon {
-    width: 24px; height: 24px; color: var(--neon);
-    flex-shrink: 0; filter: drop-shadow(0 0 8px var(--neon));
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    color: var(--neon);
+    filter: drop-shadow(0 0 8px var(--neon));
     animation: iconGlow 2s infinite;
   }
-  @keyframes iconGlow { 50% { filter: drop-shadow(0 0 16px var(--neon)); } }
-  #searchInput {
-    flex: 1; background: transparent; border: none; outline: none;
-    color: #fff; font-size: 1.05rem; padding: 14px 12px; font-family: inherit;
+  @keyframes iconGlow {
+    50% { filter: drop-shadow(0 0 14px var(--neon)); }
   }
-  #searchInput::placeholder { color: rgba(0, 255, 157, 0.4); }
+
+  #searchInput {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 0.95rem;
+    padding: 12px 6px;
+    font-family: inherit;
+  }
+  #searchInput::placeholder {
+    color: rgba(0, 255, 157, 0.4);
+    font-size: 0.85rem;
+  }
+
   .search-btn {
     background: linear-gradient(135deg, var(--neon), var(--neon-2));
-    border: none; color: #000; font-weight: 800; font-size: 1rem;
-    padding: 14px 26px; border-radius: 18px; cursor: pointer;
-    font-family: inherit; transition: all 0.3s;
-    box-shadow: 0 0 20px rgba(0,255,157,0.6);
-    position: relative; overflow: hidden;
+    border: none;
+    color: #000;
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 12px 18px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(0,255,157,0.5);
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   .search-btn::before {
-    content: ''; position: absolute; top: 0; left: -100%;
-    width: 100%; height: 100%;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
     transition: left 0.6s;
   }
-  .search-btn:hover::before { left: 100%; }
-  .search-btn:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(0,255,157,0.9); }
-  .results {
-    display: flex; flex-direction: column; gap: 12px;
-    max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
+  .search-btn:hover::before,
+  .search-btn:active::before {
+    left: 100%;
   }
-  .results.active { max-height: 2000px; overflow-y: auto; padding: 4px; }
-  .result-card {
-    background: rgba(0, 255, 157, 0.04);
-    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 255, 157, 0.2);
-    border-radius: 16px; padding: 18px 22px; text-align: right;
-    cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative; overflow: hidden;
-    opacity: 0; transform: translateY(20px);
-    animation: cardIn 0.4s forwards;
+  .search-btn:active {
+    transform: scale(0.96);
   }
-  @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
-  .result-card::before {
-    content: ''; position: absolute; top: 0; right: 0;
-    width: 3px; height: 100%;
-    background: linear-gradient(to bottom, var(--neon), var(--neon-2));
-    box-shadow: 0 0 15px var(--neon);
-  }
-  .result-card:hover {
-    background: rgba(0, 255, 157, 0.12);
-    border-color: var(--neon); transform: translateX(-6px);
-    box-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
-  }
-  .result-title { color: #fff; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; }
-  .result-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 0.8rem; }
-  .badge {
-    background: rgba(0, 255, 157, 0.15); color: var(--neon);
-    padding: 3px 10px; border-radius: 20px;
-    border: 1px solid rgba(0, 255, 157, 0.4); font-weight: 600;
-  }
-  .keywords { color: rgba(255,255,255,0.4); font-size: 0.78rem; }
-  .no-result { padding: 40px; color: rgba(255,255,255,0.4); font-size: 0.95rem; }
-  .no-result span { color: var(--neon); }
-  ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(0,255,157,0.3); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--neon); }
 
-  /* لودینگ */
+  /* ---------- نتایج ---------- */
+  .results {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s ease;
+    text-align: right;
+  }
+  .results.active {
+    max-height: 65vh;
+    overflow-y: auto;
+    padding: 2px 2px 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .result-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 255, 157, 0.2);
+    border-radius: 14px;
+    padding: 14px 16px;
+    text-align: right;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: cardIn 0.35s forwards;
+  }
+  @keyframes cardIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--neon), var(--neon-2));
+    box-shadow: 0 0 12px var(--neon);
+  }
+  .result-card:active {
+    background: rgba(0, 255, 157, 0.15);
+    border-color: var(--neon);
+    transform: translateX(-3px);
+    box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+  }
+
+  .result-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+    word-break: break-word;
+    line-height: 1.4;
+  }
+
+  .result-meta {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 0.72rem;
+  }
+
+  .badge {
+    background: rgba(0, 255, 157, 0.15);
+    color: var(--neon);
+    padding: 2px 8px;
+    border-radius: 16px;
+    border: 1px solid rgba(0, 255, 157, 0.4);
+    font-weight: 600;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .keywords {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.7rem;
+    word-break: break-word;
+  }
+
+  .no-result {
+    padding: 28px 16px;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.85rem;
+    text-align: center;
+    line-height: 1.6;
+  }
+  .no-result span {
+    color: var(--neon);
+  }
+
   .loading {
-    text-align: center; color: var(--neon);
-    padding: 40px; font-size: 0.95rem;
+    text-align: center;
+    color: var(--neon);
+    padding: 28px 16px;
+    font-size: 0.85rem;
   }
   .loading::after {
     content: '...';
@@ -180,6 +377,163 @@
     0%, 20% { content: '.'; }
     40% { content: '..'; }
     60%, 100% { content: '...'; }
+  }
+
+  /* ---------- دکمه بازگشت ---------- */
+  .back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(0, 255, 157, 0.08);
+    border: 1px solid rgba(0, 255, 157, 0.25);
+    color: var(--neon);
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.25s;
+    width: 100%;
+    margin-bottom: 2px;
+  }
+  .back-btn:active {
+    background: rgba(0, 255, 157, 0.18);
+    transform: scale(0.97);
+  }
+  .back-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .folder-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(0, 255, 157, 0.06);
+    border: 1px solid rgba(0, 255, 157, 0.2);
+    border-radius: 14px;
+    margin-bottom: 2px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--neon);
+  }
+  .folder-header .count {
+    margin-right: auto;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+  }
+
+  /* ---------- اسکرول‌بار ---------- */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0,255,157,0.3);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--neon);
+  }
+
+  /* ================================================================
+     ریسپانسیو
+     ================================================================ */
+
+  @media (max-width: 400px) {
+    body {
+      padding: 12px 10px;
+      align-items: flex-start;
+      padding-top: 40px;
+    }
+    .logo { font-size: 2rem; }
+    .tagline {
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      margin-bottom: 22px;
+    }
+    .search-box {
+      border-radius: 16px;
+      padding: 3px 3px 3px 8px;
+      gap: 2px;
+    }
+    .search-icon { width: 17px; height: 17px; min-width: 17px; }
+    #searchInput { font-size: 0.82rem; padding: 10px 4px; }
+    #searchInput::placeholder { font-size: 0.72rem; }
+    .search-btn {
+      font-size: 0.75rem;
+      padding: 10px 12px;
+      border-radius: 12px;
+    }
+    .result-card { padding: 12px 12px; border-radius: 12px; }
+    .result-title { font-size: 0.85rem; }
+    .result-meta { font-size: 0.65rem; }
+    .badge { font-size: 0.62rem; padding: 2px 6px; }
+    .keywords { font-size: 0.63rem; }
+    .back-btn { font-size: 0.75rem; padding: 9px 12px; }
+    .folder-header { font-size: 0.82rem; padding: 10px 12px; }
+  }
+
+  @media (min-width: 401px) and (max-width: 600px) {
+    body { padding: 16px 14px; align-items: center; }
+    .logo { font-size: 2.6rem; }
+    .tagline { font-size: 0.72rem; margin-bottom: 30px; }
+    .search-box { border-radius: 18px; padding: 4px 4px 4px 10px; }
+    #searchInput { font-size: 0.9rem; padding: 11px 6px; }
+    .search-btn { font-size: 0.82rem; padding: 11px 16px; border-radius: 14px; }
+    .result-card { padding: 14px 16px; }
+    .result-title { font-size: 0.92rem; }
+  }
+
+  @media (min-width: 601px) and (max-width: 768px) {
+    .container { max-width: 680px; }
+    .logo { font-size: 3.2rem; }
+    .tagline { font-size: 0.82rem; margin-bottom: 34px; }
+    .search-box { border-radius: 22px; padding: 5px 5px 5px 16px; }
+    #searchInput { font-size: 1rem; padding: 13px 10px; }
+    .search-btn { font-size: 0.92rem; padding: 13px 22px; border-radius: 16px; }
+  }
+
+  @media (min-width: 769px) {
+    .search-box { padding: 6px 6px 6px 20px; }
+    #searchInput { font-size: 1.05rem; padding: 14px 12px; }
+    .search-btn { font-size: 1rem; padding: 14px 26px; border-radius: 18px; }
+  }
+
+  @media (max-height: 500px) and (orientation: landscape) {
+    body { align-items: flex-start; padding-top: 20px; }
+    .logo { font-size: 1.8rem; margin-bottom: 2px; }
+    .tagline { font-size: 0.6rem; margin-bottom: 14px; }
+    .search-wrapper { margin-bottom: 14px; }
+    .results.active { max-height: 45vh; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .grid-bg, .laser, .particle { animation: none !important; }
+  }
+
+  @media (hover: hover) {
+    .result-card:hover {
+      background: rgba(0, 255, 157, 0.12);
+      border-color: var(--neon);
+      transform: translateX(-6px);
+      box-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
+    }
+    .search-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(0,255,157,0.9);
+    }
+    .back-btn:hover {
+      background: rgba(0, 255, 157, 0.15);
+      border-color: var(--neon);
+    }
   }
 </style>
 </head>
@@ -201,8 +555,8 @@
         <circle cx="11" cy="11" r="7"/>
         <path d="M21 21l-4.3-4.3"/>
       </svg>
-      <input type="text" id="searchInput" placeholder="دنبال چی هستی؟ بنویس..." autocomplete="off">
-      <button class="search-btn" onclick="doSearch()">جستجو</button>
+      <input type="text" id="searchInput" placeholder="دنبال چی هستی؟ بنویس..." autocomplete="off" inputmode="search" enterkeyhint="search">
+      <button class="search-btn" id="searchBtn">جستجو</button>
     </div>
   </div>
 
@@ -210,11 +564,12 @@
 </div>
 
 <script>
-  // ============ بارگذاری داده‌ها از فایل JSON ============
+  // ============ داده‌ها ============
   let categories = [];
   let files = [];
   let dataLoaded = false;
 
+  // ============ بارگذاری ============
   async function loadData() {
     const results = document.getElementById('results');
     results.innerHTML = '<div class="loading">در حال بارگذاری داده‌ها</div>';
@@ -222,7 +577,7 @@
 
     try {
       const res = await fetch('nexor-data.json?t=' + Date.now());
-      if (!res.ok) throw new Error('فایل پیدا نشد');
+      if (!res.ok) throw new Error('not found');
       const data = await res.json();
       categories = data.categories || [];
       files = data.files || [];
@@ -230,7 +585,6 @@
       results.classList.remove('active');
       results.innerHTML = '';
     } catch (err) {
-      // اگه فایل پیدا نشد، از localStorage استفاده کن (فقط برای تست ادمین)
       const localCats = localStorage.getItem('nexor_cats');
       const localFiles = localStorage.getItem('nexor_files');
       if (localCats && localFiles) {
@@ -247,10 +601,11 @@
 
   loadData();
 
-  // ============ ذرات پس‌زمینه ============
+  // ============ ذرات ============
   (function createParticles() {
     const container = document.getElementById('particles');
-    for (let i = 0; i < 25; i++) {
+    const count = window.innerWidth < 600 ? 14 : 25;
+    for (let i = 0; i < count; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
       p.style.left = Math.random() * 100 + '%';
@@ -261,12 +616,105 @@
     }
   })();
 
+  // ============ ابزار ============
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+  }
+
+  // ============ باز کردن لینک در تب جدید ============
+  function openLink(url) {
+    if (!url) return;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
+  // ============ ساخت کارت فایل ============
+  function createFileCard(f, index) {
+    const div = document.createElement('div');
+    div.className = 'result-card';
+    div.style.animationDelay = (index * 0.04) + 's';
+    div.innerHTML = `
+      <div class="result-title">${escapeHtml(f.title)}</div>
+      <div class="result-meta">
+        <span class="badge">${escapeHtml(f.category)}</span>
+        ${(f.keywords || []).length ? `<span class="keywords">🔑 ${f.keywords.map(escapeHtml).join(' • ')}</span>` : ''}
+      </div>
+    `;
+    div.addEventListener('click', () => openLink(f.link));
+    return div;
+  }
+
+  // ============ ساخت کارت دسته‌بندی ============
+  function createCategoryCard(cat) {
+    const catFiles = files.filter(f => f.category === cat);
+    const div = document.createElement('div');
+    div.className = 'result-card';
+    div.setAttribute('data-category', cat);
+    div.innerHTML = `
+      <div class="result-title">📂 دسته‌بندی: ${escapeHtml(cat)}</div>
+      <div class="result-meta">
+        <span class="badge">${catFiles.length} مورد</span>
+      </div>
+    `;
+    div.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openCategory(cat);
+    });
+    return div;
+  }
+
+  // ============ باز کردن دسته‌بندی ============
+  function openCategory(cat) {
+    const results = document.getElementById('results');
+    const catFiles = files.filter(f => f.category === cat);
+
+    results.innerHTML = '';
+    results.classList.add('active');
+
+    // دکمه بازگشت
+    const backBtn = document.createElement('button');
+    backBtn.className = 'back-btn';
+    backBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      بازگشت به نتایج جستجو
+    `;
+    backBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      doSearch();
+    });
+
+    // هدر فولدر
+    const folderHeader = document.createElement('div');
+    folderHeader.className = 'folder-header';
+    folderHeader.innerHTML = `📂 ${escapeHtml(cat)} <span class="count">${catFiles.length} فایل</span>`;
+
+    results.appendChild(backBtn);
+    results.appendChild(folderHeader);
+
+    // فایل‌ها
+    if (catFiles.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'no-result';
+      empty.textContent = 'این دسته هنوز فایلی نداره';
+      results.appendChild(empty);
+      return;
+    }
+
+    catFiles.forEach((f, i) => {
+      results.appendChild(createFileCard(f, i));
+    });
+  }
+
   // ============ جستجو ============
   function doSearch() {
     if (!dataLoaded) {
       loadData();
       return;
     }
+
     const q = document.getElementById('searchInput').value.trim().toLowerCase();
     const results = document.getElementById('results');
 
@@ -295,82 +743,62 @@
       return;
     }
 
+    // اول فولدرها
     matchedCats.forEach(cat => {
-      const catFiles = files.filter(f => f.category === cat);
-      const div = document.createElement('div');
-      div.className = 'result-card';
-      div.innerHTML = `
-        <div class="result-title">📂 دسته‌بندی: ${escapeHtml(cat)}</div>
-        <div class="result-meta">
-          <span class="badge">${catFiles.length} مورد</span>
-        </div>
-      `;
-      div.onclick = () => {
-        document.getElementById('searchInput').value = cat;
-        showCategoryFiles(cat);
-      };
-      results.appendChild(div);
+      results.appendChild(createCategoryCard(cat));
     });
 
+    // بعد فایل‌ها
     matchedFiles.forEach((f, i) => {
-      const div = document.createElement('div');
-      div.className = 'result-card';
-      div.style.animationDelay = (i * 0.05) + 's';
-      div.innerHTML = `
-        <div class="result-title">${escapeHtml(f.title)}</div>
-        <div class="result-meta">
-          <span class="badge">${escapeHtml(f.category)}</span>
-          ${(f.keywords || []).length ? `<span class="keywords">🔑 ${f.keywords.map(escapeHtml).join(' • ')}</span>` : ''}
-        </div>
-      `;
-      div.onclick = () => { if (f.link) window.open(f.link, '_blank'); };
-      results.appendChild(div);
+      results.appendChild(createFileCard(f, i));
     });
   }
 
-  function showCategoryFiles(cat) {
-    const results = document.getElementById('results');
-    const catFiles = files.filter(f => f.category === cat);
-    results.innerHTML = '';
-    results.classList.add('active');
+  // ============ رویدادها ============
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
 
-    if (catFiles.length === 0) {
-      results.innerHTML = '<div class="no-result">این دسته هنوز فایلی نداره</div>';
-      return;
-    }
-
-    catFiles.forEach((f, i) => {
-      const div = document.createElement('div');
-      div.className = 'result-card';
-      div.style.animationDelay = (i * 0.05) + 's';
-      div.innerHTML = `
-        <div class="result-title">${escapeHtml(f.title)}</div>
-        <div class="result-meta">
-          <span class="badge">${escapeHtml(f.category)}</span>
-          ${(f.keywords || []).length ? `<span class="keywords">🔑 ${f.keywords.map(escapeHtml).join(' • ')}</span>` : ''}
-        </div>
-      `;
-      div.onclick = () => { if (f.link) window.open(f.link, '_blank'); };
-      results.appendChild(div);
-    });
-  }
-
-  document.getElementById('searchInput').addEventListener('keypress', e => {
-    if (e.key === 'Enter') doSearch();
+  searchBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    doSearch();
   });
 
-  document.getElementById('searchInput').addEventListener('input', e => {
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      doSearch();
+      searchInput.blur();
+    }
+  });
+
+  searchInput.addEventListener('input', (e) => {
     if (e.target.value.length > 1) doSearch();
     if (e.target.value.length === 0) {
       document.getElementById('results').classList.remove('active');
+      document.getElementById('results').innerHTML = '';
     }
   });
 
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, m => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[m]));
-  }
+  // جلوگیری از زوم iOS
+  searchInput.addEventListener('focus', function() {
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+      this.style.fontSize = '16px';
+    }
+  });
+  searchInput.addEventListener('blur', function() {
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+      this.style.fontSize = '';
+    }
+  });
+
+  // بستن نتایج با کلیک بیرون
+  document.addEventListener('click', function(e) {
+    const container = document.querySelector('.container');
+    const results = document.getElementById('results');
+    if (results.classList.contains('active') && !container.contains(e.target)) {
+      results.classList.remove('active');
+    }
+  });
 </script>
 </body>
 </html>
