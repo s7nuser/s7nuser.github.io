@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexor Search</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+  :root { --neon: #00ff9d; --neon-2: #00ffcc; --dark: #000; }
+  body {
+    background: var(--dark); color: #fff; min-height: 100vh;
+    overflow-x: hidden; position: relative;
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+  }
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,157,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,157,0.08) 1px, transparent 1px);
+    background-size: 50px 50px; z-index: 0;
+    animation: gridMove 20s linear infinite;
+    mask-image: radial-gradient(circle at center, #000 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(circle at center, #000 0%, transparent 75%);
+  }
+  @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }
+  .laser {
+    position: fixed; width: 3px; height: 100vh;
+    background: linear-gradient(to bottom, transparent, var(--neon), transparent);
+    box-shadow: 0 0 20px var(--neon), 0 0 40px var(--neon);
+    z-index: 1; opacity: 0.6; animation: laserScan 6s ease-in-out infinite;
+  }
+  .laser:nth-child(2) { left: 20%; animation-delay: 0s; }
+  .laser:nth-child(3) { left: 50%; animation-delay: 2s; background: linear-gradient(to bottom, transparent, var(--neon-2), transparent); box-shadow: 0 0 20px var(--neon-2); }
+  .laser:nth-child(4) { left: 80%; animation-delay: 4s; }
+  @keyframes laserScan {
+    0%, 100% { transform: translateX(-100px) scaleY(1); opacity: 0.2; }
+    50% { transform: translateX(100px) scaleY(1.2); opacity: 0.8; }
+  }
+  .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+  .particle {
+    position: absolute; width: 4px; height: 4px;
+    background: var(--neon); border-radius: 50%;
+    box-shadow: 0 0 10px var(--neon);
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    from { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 1; } 90% { opacity: 1; }
+    to { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+  .container { position: relative; z-index: 10; width: 100%; max-width: 720px; text-align: center; }
+  .logo {
+    font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; letter-spacing: 2px;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff 0%, var(--neon) 50%, var(--neon-2) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(0,255,157,0.7));
+    animation: logoPulse 3s ease-in-out infinite;
+  }
+  .logo span { color: var(--neon); -webkit-text-fill-color: var(--neon); }
+  @keyframes logoPulse {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(0,255,157,0.5)); }
+    50% { filter: drop-shadow(0 0 40px rgba(0,255,157,1)); }
+  }
+  .tagline {
+    color: rgba(255,255,255,0.5); font-size: 0.9rem;
+    margin-bottom: 40px; letter-spacing: 3px;
+  }
+  .tagline::before, .tagline::after {
+    content: '◆'; color: var(--neon); margin: 0 10px;
+    animation: blink 2s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.3; } }
+  .search-wrapper { position: relative; margin-bottom: 30px; }
+  .search-box {
+    position: relative; display: flex; align-items: center;
+    background: rgba(0, 255, 157, 0.05);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1.5px solid rgba(0, 255, 157, 0.3);
+    border-radius: 24px; padding: 6px 6px 6px 20px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 32px rgba(0, 255, 157, 0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+    overflow: hidden;
+  }
+  .search-box::before {
+    content: ''; position: absolute; inset: 0; border-radius: 24px; padding: 1.5px;
+    background: linear-gradient(135deg, var(--neon), transparent 40%, transparent 60%, var(--neon-2));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0.6; pointer-events: none; animation: borderRotate 4s linear infinite;
+  }
+  @keyframes borderRotate { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+  .search-box:focus-within {
+    border-color: var(--neon); background: rgba(0, 255, 157, 0.1);
+    box-shadow: 0 0 0 4px rgba(0, 255, 157, 0.15), 0 0 40px rgba(0, 255, 157, 0.5), 0 8px 40px rgba(0, 255, 157, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+  .search-icon {
+    width: 24px; height: 24px; color: var(--neon);
+    flex-shrink: 0; filter: drop-shadow(0 0 8px var(--neon));
+    animation: iconGlow 2s infinite;
+  }
+  @keyframes iconGlow { 50% { filter: drop-shadow(0 0 16px var(--neon)); } }
+  #searchInput {
+    flex: 1; background: transparent; border: none; outline: none;
+    color: #fff; font-size: 1.05rem; padding: 14px 12px; font-family: inherit;
+  }
+  #searchInput::placeholder { color: rgba(0, 255, 157, 0.4); }
+  .search-btn {
+    background: linear-gradient(135deg, var(--neon), var(--neon-2));
+    border: none; color: #000; font-weight: 800; font-size: 1rem;
+    padding: 14px 26px; border-radius: 18px; cursor: pointer;
+    font-family: inherit; transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(0,255,157,0.6);
+    position: relative; overflow: hidden;
+  }
+  .search-btn::before {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    transition: left 0.6s;
+  }
+  .search-btn:hover::before { left: 100%; }
+  .search-btn:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(0,255,157,0.9); }
+  .results {
+    display: flex; flex-direction: column; gap: 12px;
+    max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
+  }
+  .results.active { max-height: 2000px; overflow-y: auto; padding: 4px; }
+  .result-card {
+    background: rgba(0, 255, 157, 0.04);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 255, 157, 0.2);
+    border-radius: 16px; padding: 18px 22px; text-align: right;
+    cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: hidden;
+    opacity: 0; transform: translateY(20px);
+    animation: cardIn 0.4s forwards;
+  }
+  @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+  .result-card::before {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--neon), var(--neon-2));
+    box-shadow: 0 0 15px var(--neon);
+  }
+  .result-card:hover {
+    background: rgba(0, 255, 157, 0.12);
+    border-color: var(--neon); transform: translateX(-6px);
+    box-shadow: 0 0 30px rgba(0, 255, 157, 0.4);
+  }
+  .result-title { color: #fff; font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; }
+  .result-meta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 0.8rem; }
+  .badge {
+    background: rgba(0, 255, 157, 0.15); color: var(--neon);
+    padding: 3px 10px; border-radius: 20px;
+    border: 1px solid rgba(0, 255, 157, 0.4); font-weight: 600;
+  }
+  .keywords { color: rgba(255,255,255,0.4); font-size: 0.78rem; }
+  .no-result { padding: 40px; color: rgba(255,255,255,0.4); font-size: 0.95rem; }
+  .no-result span { color: var(--neon); }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,255,157,0.3); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--neon); }
+
+  /* لودینگ */
+  .loading {
+    text-align: center; color: var(--neon);
+    padding: 40px; font-size: 0.95rem;
+  }
+  .loading::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+  }
+  @keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="laser"></div>
+<div class="laser"></div>
+<div class="laser"></div>
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <h1 class="logo">Nexor<span>Search</span></h1>
+  <p class="tagline">جستجوی هوشمند نسل جدید</p>
+
+  <div class="search-wrapper">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7"/>
+        <path d="M21 21l-4.3-4.3"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="دنبال چی هستی؟ بنویس..." autocomplete="off">
+      <button class="search-btn" onclick="doSearch()">جستجو</button>
+    </div>
+  </div>
+
+  <div class="results" id="results"></div>
+</div>
+
+<script>
+  // ============ بارگذاری داده‌ها از فایل JSON ============
+  let categories = [];
+  let files = [];
+  let dataLoaded = false;
+
+  async function loadData() {
+    const results = document.getElementById('results');
+    results.innerHTML = '<div class="loading">در حال بارگذاری داده‌ها</div>';
+    results.classList.add('active');
+
+    try {
+      const res = await fetch('nexor-data.json?t=' + Date.now());
+      if (!res.ok) throw new Error('فایل پیدا نشد');
+      const data = await res.json();
+      categories = data.categories || [];
+      files = data.files || [];
+      dataLoaded = true;
+      results.classList.remove('active');
+      results.innerHTML = '';
+    } catch (err) {
+      // اگه فایل پیدا نشد، از localStorage استفاده کن (فقط برای تست ادمین)
+      const localCats = localStorage.getItem('nexor_cats');
+      const localFiles = localStorage.getItem('nexor_files');
+      if (localCats && localFiles) {
+        categories = JSON.parse(localCats);
+        files = JSON.parse(localFiles);
+        dataLoaded = true;
+        results.classList.remove('active');
+        results.innerHTML = '';
+      } else {
+        results.innerHTML = '<div class="no-result">⚠️ فایل <span>nexor-data.json</span> کنار فایل HTML پیدا نشد</div>';
+      }
+    }
+  }
+
+  loadData();
+
+  // ============ ذرات پس‌زمینه ============
+  (function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 25; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+      p.style.animationDelay = Math.random() * 10 + 's';
+      p.style.opacity = Math.random() * 0.5 + 0.2;
+      container.appendChild(p);
+    }
+  })();
+
+  // ============ جستجو ============
+  function doSearch() {
+    if (!dataLoaded) {
+      loadData();
+      return;
+    }
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    const results = document.getElementById('results');
+
+    if (!q) {
+      results.classList.remove('active');
+      results.innerHTML = '';
+      return;
+    }
+
+    const matchedCats = categories.filter(c =>
+      c.toLowerCase().includes(q) || q.includes(c.toLowerCase())
+    );
+
+    const matchedFiles = files.filter(f => {
+      const titleMatch = f.title.toLowerCase().includes(q);
+      const catMatch = f.category.toLowerCase().includes(q);
+      const kwMatch = (f.keywords || []).some(k => k.toLowerCase().includes(q));
+      return titleMatch || catMatch || kwMatch;
+    });
+
+    results.innerHTML = '';
+    results.classList.add('active');
+
+    if (matchedCats.length === 0 && matchedFiles.length === 0) {
+      results.innerHTML = '<div class="no-result">نتیجه‌ای برای <span>"' + escapeHtml(q) + '"</span> پیدا نشد 😐</div>';
+      return;
+    }
+
+    matchedCats.forEach(cat => {
+      const catFiles = files.filter(f => f.category === cat);
+      const div = document.createElement('div');
+      div.className = 'result-card';
+      div.innerHTML = `
+        <div class="result-title">📂 دسته‌بندی: ${escapeHtml(cat)}</div>
+        <div class="result-meta">
+          <span class="badge">${catFiles.length} مورد</span>
+        </div>
+      `;
+      div.onclick = () => {
+        document.getElementById('searchInput').value = cat;
+        showCategoryFiles(cat);
+      };
+      results.appendChild(div);
+    });
+
+    matchedFiles.forEach((f, i) => {
+      const div = document.createElement('div');
+      div.className = 'result-card';
+      div.style.animationDelay = (i * 0.05) + 's';
+      div.innerHTML = `
+        <div class="result-title">${escapeHtml(f.title)}</div>
+        <div class="result-meta">
+          <span class="badge">${escapeHtml(f.category)}</span>
+          ${(f.keywords || []).length ? `<span class="keywords">🔑 ${f.keywords.map(escapeHtml).join(' • ')}</span>` : ''}
+        </div>
+      `;
+      div.onclick = () => { if (f.link) window.open(f.link, '_blank'); };
+      results.appendChild(div);
+    });
+  }
+
+  function showCategoryFiles(cat) {
+    const results = document.getElementById('results');
+    const catFiles = files.filter(f => f.category === cat);
+    results.innerHTML = '';
+    results.classList.add('active');
+
+    if (catFiles.length === 0) {
+      results.innerHTML = '<div class="no-result">این دسته هنوز فایلی نداره</div>';
+      return;
+    }
+
+    catFiles.forEach((f, i) => {
+      const div = document.createElement('div');
+      div.className = 'result-card';
+      div.style.animationDelay = (i * 0.05) + 's';
+      div.innerHTML = `
+        <div class="result-title">${escapeHtml(f.title)}</div>
+        <div class="result-meta">
+          <span class="badge">${escapeHtml(f.category)}</span>
+          ${(f.keywords || []).length ? `<span class="keywords">🔑 ${f.keywords.map(escapeHtml).join(' • ')}</span>` : ''}
+        </div>
+      `;
+      div.onclick = () => { if (f.link) window.open(f.link, '_blank'); };
+      results.appendChild(div);
+    });
+  }
+
+  document.getElementById('searchInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  document.getElementById('searchInput').addEventListener('input', e => {
+    if (e.target.value.length > 1) doSearch();
+    if (e.target.value.length === 0) {
+      document.getElementById('results').classList.remove('active');
+    }
+  });
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, m => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+  }
+</script>
+</body>
+</html>
